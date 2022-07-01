@@ -16,41 +16,45 @@ upload files would save into project/data folder
 
 ## ex) upload
 ```
-$ curl -X 'POST' 'http://localhost:8000/upload/' \
+curl -X 'POST' \
+  'http://localhost:8000/upload/' \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
-  -F 'file=@kern.log;type=text/x-log'
+  -F 'file=@dmesg.0'
 ```
 Result
 ```
 {
-  "file_name": "kern.log",
-  "file_size": "903.48KB",
-  "file_type": "text/x-log",
-  "file_path": "/usr/src"
+  "file_name": "dmesg.0",
+  "file_size": "47.67KB",
+  "file_type": "application/octet-stream",
+  "file_path": "/upload_files/"
 }
 ```
 ## ex) listFiles
 ```
-$ curl -X 'GET' 'http://localhost:8000/listFiles' -H 'accept: application/json'
+curl -X 'GET' \
+  'http://localhost:8000/listFiles' \
+  -H 'accept: application/json'
 ```
 
 Result
 ```
 [
   {
-    "id": 1,
-    "file_path": "/usr/src",
     "file_type": "application/octet-stream",
-    "file_name": "dmesg",
-    "file_size": "47.67KB"
+    "file_name": "vboxadd-setup.log.2",
+    "file_size": "44.12KB"
   },
   {
-    "id": 2,
-    "file_path": "/usr/src",
-    "file_type": "text/x-log",
-    "file_name": "kern.log",
-    "file_size": "903.48KB"
+    "file_type": "application/octet-stream",
+    "file_name": "vboxadd-setup.log.4",
+    "file_size": "44.12KB"
+  },
+  {
+    "file_type": "application/octet-stream",
+    "file_name": "dmesg.0",
+    "file_size": "47.67KB"
   }
 ]
 ```
