@@ -4,7 +4,8 @@ services:
   # MySQL
   db:
     container_name: "db"
-    build: ./docker/mysql
+#    build: ./docker/mysql
+    image: guangyaw/fastapi-demo
     restart: always
     tty: true
     environment:
@@ -31,6 +32,7 @@ services:
       - "8000:8000"
     volumes:
       - ./code:/usr/src/server
+      - ./data:/upload_files
     networks:
       - local-net
 

@@ -1,4 +1,6 @@
 from fastapi import FastAPI, UploadFile, File
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 from starlette.middleware.cors import CORSMiddleware
 from db import session
 from model import FileInfoTable
@@ -21,6 +23,10 @@ async def create_upload_file(file: UploadFile = File(...)):
     contents = await file.read()
     tmp_size = len(contents)
     final_size = ''
+    save_path = "/upload_files/"
+    target_path = save_path+file.filename
+    with open(target_path, 'wb') as f:
+        f.write(contents)
 
     if tmp_size/(1024**3) > 1:
         final_size = str(('%.2f'%(tmp_size/(1024**3)))) + "GB"
@@ -33,19 +39,27 @@ async def create_upload_file(file: UploadFile = File(...)):
     newfile.file_name = str(file.filename)
     newfile.file_size = str(final_size)
     newfile.file_type = str(file.content_type)
-    newfile.file_path = str(Path(__file__).resolve().parents[1])
+    newfile.file_path = str(save_path)
     session.add(newfile)
     session.commit()
 
     return {"file_name": file.filename,
             "file_size": final_size,
             "file_type": file.content_type,
-            "file_path": Path(__file__).resolve().parents[1]
+            "file_path": save_path
             }
 
 
 @app.get("/listFiles")
 def read_users():
     all_file = session.query(FileInfoTable).all()
-    return all_file
+    json_body = jsonable_encoder(all_file)
+    target = []
+    for tmp_item in json_body:
+        del tmp_item['id']
+        del tmp_item['file_path']
+        target.append(tmp_item)
+
+    return JSONResponse(target)
+
 

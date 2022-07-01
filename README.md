@@ -1,5 +1,5 @@
 # Overview
-Sample program to build MySQL and Fast API environment with DockerCompose
+Pull MySQL from DockerHub and build Fast API environment with DockerCompose
 
 # Install
 Create and Running
@@ -11,7 +11,8 @@ $ docker-compose up --build
 ## Document of API
 http://localhost:8000/docs
 
-You can try upload , listFiles
+You can try upload , listFiles, 
+upload files would save into project/data folder
 
 ## ex) upload
 ```
